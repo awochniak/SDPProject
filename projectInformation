@@ -1,0 +1,15 @@
+Skład: Natalia Dygas, Joanna Głowacka, Arkadiusz Wochniak
+Grupa: D 
+Wzorzec: MVC (Android) / Proxy
+Na czym polega aplikacja: 
+    • aplikację mającą umożliwiać wyszukiwanie i składowanie informacji na temat lotów w określonym terminie, z określonego miejsca, z określonych lotnisk. 
+    • użytkownik z poziomu aplikacji mobilnej mógłby wybrać jeden z gotowych kierunków, konkretną datę lub ewentualnie zdefiniować nowy kierunek i na podstawie tego zostanie mu wyświetlona lista interesujących lotów
+    • mechanizm opierałby się na parserze html, który ściągałby dane z wyszukiwarki lotów azair.cz i zapisywał do bazy danych. Oddzielny skrypt PHP (serwer) wysyłałby cyklicznie zapisane dane do Firebase (dynamicznej bazy danych odświeżanej w czasie rzeczywistym) oraz przy pomocy API Firebase wysyłał by powiadomienia metodą PUSH do aplikacji mobilnej (Cloud Messaging)
+    • odświeżenie danych w Firebase powodowałoby zmianę wartość w aplikacji mobilnej (aktualizacje cen)
+
+Kto, robi poszczególne etapy:
+    • Natalia Dygas – stworzenie parsera HTML pobierającego dane ze strony AZAIR oraz skryptu odpowiedzialnego za wysyłanie cyklicznych powiadomień.
+    • Joanna Głowacka – integracja z Firebasem, stworzenie i konfiguracja baz danych, implementacja Cloud Messaging.
+    • Arkadiusz Wochniak – stworzenie aplikacji mobilnej w MVC, koordynacja działań grupy, sporządzenie raportu.
+
+GitHub: https://github.com/awochniak/SDPProject
