@@ -1,12 +1,12 @@
 <?php
-$method = 'GET';
-$url = 'http://www.azair.cz/azfin.php';
+
+$url = 'http://www.azair.cz/azfin.php?';
 $data = array(
     'searchtype' => 'flexi', // *
     'isOneway' => 'return', // jeżeli w jedną stronę wówczas 'oneway'
-    'srcAirport' => '[POZ]', //*porty wylotu, w nawiasie kwadratowym, jeżeli tylko jedno lotnisko, jeżeli dodatkowe, wówczas (+lotnisko_2, lotnisko_3) etc
+    'srcAirport' => '[POZ] (+WMI)', //*porty wylotu, w nawiasie kwadratowym, jeżeli tylko jedno lotnisko, jeżeli dodatkowe, wówczas (+lotnisko_2, lotnisko_3) etc
     'dstAirport' => '[MXP]', //*porty docelowe, w nawiasie kwadratowym, jeżeli tylko jedno lotnisko, jeżeli dodatkowe, wówczas (+lotnisko_2, lotnisko_3) etc
-    'depdate' => '2019-05-16', //* dolny zakres daty
+    'depdate' => '2019-05-18', //* dolny zakres daty
     'arrdate' => '2020-03-31', //* górny zakres daty
     'minDaysStay' => '2', //* min ilość dni
     'maxDaysStay' => '3', //* max ilość dni
@@ -30,8 +30,25 @@ $data = array(
 // 
     );
 
-    $data = http_build_query($data, '', '&');
-    $response = file_get_contents($url."?".$data, false);
 
-echo $response;
+// ODNALEZIENIE STRONY O PODANYCH W ANDROIDZIE PARAMETRACH WEJŚCIOWYCH
+
+$params = http_build_query($data, '', '&'); // transformacja tablicy do parametrów łączonych &
+$requestUrl = $url.$params; //połączenie urlu z parametrami - link w postaci get
+
+	$curl = curl_init(); //inicjalizacja żądania
+		curl_setopt_array($curl, [
+			CURLOPT_RETURNTRANSFER => 1, // oczekiwanie na odpowiedź zwrotną
+			CURLOPT_URL => $requestUrl, // przypisanie adresu url
+		]);
+		
+	$response = curl_exec($curl); // wykonanie żądania
+	curl_close($curl); // zamknięcie żądania curl i wyczyszczenie zasobów
+
+
+// ZAPIS DO PLIKU
+
+$file = fopen('temp.txt', 'w'); // otwarcie pliku z uprawieniami do zapisu
+fwrite($file, $response); // zapis odpowiedzi do pliku
+fclose($file); // zamknięcie pliku
 ?>
